@@ -1,0 +1,102 @@
+<div class="container" style="max-width: 800px; margin: 2rem auto;">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API Integration Settings</h2>
+      <p style="margin: 0.5rem 0 0 0; color: #666; font-size: 14px;">
+        Configure the application to use either mock data or real API integration
+      </p>
+    </div>
+
+    <div style="padding: 1.5rem;">
+      <!-- Current Mode Display -->
+      <div class="current-mode" style="margin-bottom: 2rem;">
+        <h3>Current Mode</h3>
+        <div class="mode-indicator" 
+             [class]="isApiModeEnabled() ? 'api-mode' : 'mock-mode'">
+          <span class="mode-badge">
+            {{ isApiModeEnabled() ? 'API Mode' : 'Mock Data Mode' }}
+          </span>
+          <p style="margin: 0.5rem 0 0 0; font-size: 14px;">
+            {{ isApiModeEnabled() ? 
+               'Using dummyjson.com for authentication' : 
+               'Using in-memory mock data for authentication' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Mode Controls -->
+      <div class="mode-controls" style="margin-bottom: 2rem;">
+        <h3>Switch Authentication Mode</h3>
+        <div class="control-buttons" style="display: flex; gap: 1rem; margin-top: 1rem;">
+          <button 
+            class="btn btn-primary"
+            [disabled]="!isApiModeEnabled()"
+            (click)="disableApiMode()">
+            Use Mock Data
+          </button>
+          <button 
+            class="btn btn-success"
+            [disabled]="isApiModeEnabled()"
+            (click)="enableApiMode()">
+            Enable API Integration
+          </button>
+        </div>
+        <div style="margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+          <p style="margin: 0; font-size: 14px; color: #666;">
+            <strong>Note:</strong> After switching modes, you may need to log out and log back in for changes to take effect.
+          </p>
+        </div>
+      </div>
+
+      <!-- API Configuration Details -->
+      <div class="api-config" style="margin-bottom: 2rem;">
+        <h3>API Configuration</h3>
+        <div class="config-details" style="background: #f8f9fa; padding: 1rem; border-radius: 8px;">
+          <div class="config-item" style="margin-bottom: 1rem;">
+            <strong>Base URL:</strong> {{ getApiConfig().baseUrl }}
+          </div>
+          <div class="config-item" style="margin-bottom: 1rem;">
+            <strong>Description:</strong> {{ getApiConfig().description }}
+          </div>
+          <div class="endpoints">
+            <strong>Available Endpoints:</strong>
+            <ul style="margin: 0.5rem 0 0 1rem; padding: 0;">
+              <li *ngFor="let endpoint of getApiConfig().endpoints | keyvalue">
+                <code>{{ endpoint.key }}</code>: {{ getApiConfig().baseUrl }}{{ endpoint.value }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Credentials -->
+      <div class="test-credentials">
+        <h3>Test Credentials for DummyJSON</h3>
+        <div style="background: #e3f2fd; padding: 1rem; border-radius: 8px; border-left: 4px solid #2196f3;">
+          <p style="margin: 0 0 0.5rem 0; font-weight: 600;">When using API mode, you can test with these credentials:</p>
+          <div style="font-family: monospace; font-size: 14px;">
+            <div><strong>Username:</strong> emilys</div>
+            <div><strong>Password:</strong> emilyspass</div>
+          </div>
+          <p style="margin: 0.5rem 0 0 0; font-size: 12px; color: #666;">
+            Note: DummyJSON uses username instead of email for authentication
+          </p>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions" style="margin-top: 2rem;">
+        <h3>How to Use</h3>
+        <div style="background: #fff3cd; padding: 1rem; border-radius: 8px; border-left: 4px solid #ffc107;">
+          <ol style="margin: 0; padding-left: 1.5rem;">
+            <li>Choose your preferred authentication mode above</li>
+            <li>Click the corresponding button to switch modes</li>
+            <li>If using API mode, use the DummyJSON test credentials</li>
+            <li>Navigate to the login page to test authentication</li>
+            <li>The application will automatically handle the selected mode</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

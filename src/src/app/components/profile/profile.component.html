@@ -1,0 +1,225 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="card-title">My Profile</h2>
+        <div *ngIf="!isEditing">
+          <button class="btn btn-primary" (click)="startEditing()">
+            Edit Profile
+          </button>
+        </div>
+        <div *ngIf="isEditing" class="d-flex gap-2">
+          <button 
+            class="btn btn-success" 
+            (click)="saveChanges()"
+            [disabled]="!isFormValid() || !hasChanges()">
+            Save Changes
+          </button>
+          <button class="btn btn-secondary" (click)="cancelEditing()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentUser && !isEditing" class="profile-view">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <div class="avatar-circle">
+            {{currentUser.firstName.charAt(0)}}{{currentUser.lastName.charAt(0)}}
+          </div>
+        </div>
+        <div class="profile-info">
+          <h3>{{currentUser.firstName}} {{currentUser.lastName}}</h3>
+          <p class="role-badge" [class]="currentUser.role === 'admin' ? 'admin-role' : 'user-role'">
+            {{currentUser.role | titlecase}}
+          </p>
+        </div>
+      </div>
+
+      <div class="profile-details">
+        <div class="details-grid">
+          <div class="detail-item">
+            <label>First Name</label>
+            <span>{{currentUser.firstName}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Last Name</label>
+            <span>{{currentUser.lastName}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Email</label>
+            <span>{{currentUser.email}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Phone</label>
+            <span>{{currentUser.phone}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Gender</label>
+            <span>{{currentUser.gender | titlecase}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Age</label>
+            <span>{{currentUser.age}} years old</span>
+          </div>
+          <div class="detail-item">
+            <label>Date of Birth</label>
+            <span>{{currentUser.dob | customDate}}</span>
+          </div>
+          <div class="detail-item">
+            <label>Role</label>
+            <span>{{currentUser.role | titlecase}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isEditing && editableUser" class="profile-edit">
+      <form #profileForm="ngForm" (ngSubmit)="saveChanges()" novalidate>
+        <div class="edit-header">
+          <h3>Edit Profile Information</h3>
+          <p class="text-muted">All changes are temporary and stored in memory only.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="firstName" class="form-label">First Name *</label>
+            <input 
+              type="text" 
+              id="firstName" 
+              name="firstName"
+              class="form-control"
+              [(ngModel)]="editableUser.firstName"
+              #firstName="ngModel"
+              required
+              maxlength="50">
+            <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+              First name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="form-label">Last Name *</label>
+            <input 
+              type="text" 
+              id="lastName" 
+              name="lastName"
+              class="form-control"
+              [(ngModel)]="editableUser.lastName"
+              #lastName="ngModel"
+              required
+              maxlength="50">
+            <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+              Last name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              class="form-control"
+              [(ngModel)]="editableUser.email"
+              #email="ngModel"
+              required
+              email>
+            <div *ngIf="email.invalid && email.touched" class="alert alert-danger">
+              <div *ngIf="email.errors?.['required']">Email is required</div>
+              <div *ngIf="email.errors?.['email']">Please enter a valid email</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone *</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              class="form-control"
+              [(ngModel)]="editableUser.phone"
+              #phone="ngModel"
+              required
+              pattern="[0-9\-\+\(\)\s]+">
+            <div *ngIf="phone.invalid && phone.touched" class="alert alert-danger">
+              <div *ngIf="phone.errors?.['required']">Phone number is required</div>
+              <div *ngIf="phone.errors?.['pattern']">Please enter a valid phone number</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="gender" class="form-label">Gender</label>
+            <select 
+              id="gender" 
+              name="gender"
+              class="form-select"
+              [(ngModel)]="editableUser.gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dob" class="form-label">Date of Birth *</label>
+            <input 
+              type="date" 
+              id="dob" 
+              name="dob"
+              class="form-control"
+              [(ngModel)]="editableUser.dob"
+              #dob="ngModel"
+              required
+              (change)="onDobChange()">
+            <div *ngIf="dob.invalid && dob.touched" class="alert alert-danger">
+              Date of birth is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age" class="form-label">Age</label>
+            <input 
+              type="number" 
+              id="age" 
+              name="age"
+              class="form-control"
+              [(ngModel)]="editableUser.age"
+              readonly
+              title="Age is automatically calculated from date of birth">
+            <small class="text-muted">Automatically calculated from date of birth</small>
+          </div>
+
+          <div class="form-group">
+            <label for="role" class="form-label">Role</label>
+            <input 
+              type="text" 
+              id="role" 
+              name="role"
+              class="form-control"
+              [value]="editableUser.role | titlecase"
+              readonly
+              title="Role cannot be changed">
+            <small class="text-muted">Role cannot be modified</small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <div class="changes-indicator" *ngIf="hasChanges()">
+            <span class="text-info">● You have unsaved changes</span>
+          </div>
+          <div class="changes-indicator" *ngIf="!hasChanges() && isEditing">
+            <span class="text-muted">No changes made</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="!currentUser" class="error-state">
+      <div class="text-center" style="padding: 2rem;">
+        <h3>Profile not available</h3>
+        <p>Unable to load profile information. Please try logging in again.</p>
+      </div>
+    </div>
+  </div>
+</div>

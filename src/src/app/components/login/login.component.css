@@ -1,0 +1,31 @@
+/* Login component specific styles */
+.demo-credentials {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.demo-credentials p {
+  margin: 0.5rem 0;
+}
+
+/* Loading state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Form validation styles */
+.form-control.ng-invalid.ng-touched {
+  border-color: #e74c3c;
+}
+
+.form-control.ng-valid.ng-touched {
+  border-color: #27ae60;
+}
+
+.alert {
+  font-size: 14px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}

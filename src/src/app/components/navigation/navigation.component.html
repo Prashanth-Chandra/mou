@@ -1,0 +1,75 @@
+<nav class="navbar" *ngIf="isLoggedIn()">
+  <div class="navbar-container">
+    <a routerLink="/" class="navbar-brand">User Management System</a>
+    
+    <ul class="navbar-nav">
+      <!-- Admin Navigation -->
+      <li *ngIf="isAdmin()">
+        <a routerLink="/users" 
+           class="nav-link"
+           [class.active]="isActiveRoute('/users')">
+          Users
+        </a>
+      </li>
+      
+      <!-- Common Navigation -->
+      <li>
+        <a routerLink="/posts" 
+           class="nav-link"
+           [class.active]="isActiveRoute('/posts')">
+          Posts
+        </a>
+      </li>
+      
+      <li>
+        <a routerLink="/profile" 
+           class="nav-link"
+           [class.active]="isActiveRoute('/profile')">
+          Profile
+        </a>
+      </li>
+    </ul>
+
+    <div class="navbar-user">
+      <div class="user-info">
+        <span class="user-name">{{getCurrentUserName()}}</span>
+        <span class="user-role" [class]="currentUser?.role === 'admin' ? 'admin-badge' : 'user-badge'">
+          {{currentUser?.role | titlecase}}
+        </span>
+      </div>
+      <button class="btn btn-secondary logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-navbar" *ngIf="isLoggedIn()">
+  <div class="mobile-header">
+    <span class="mobile-brand">UMS</span>
+    <div class="mobile-user">
+      <span>{{getCurrentUserName()}}</span>
+      <button class="btn btn-sm btn-secondary" (click)="logout()">Logout</button>
+    </div>
+  </div>
+  
+  <div class="mobile-nav-links">
+    <a routerLink="/posts" 
+       class="mobile-nav-link"
+       [class.active]="isActiveRoute('/posts')">
+      Posts
+    </a>
+    <a *ngIf="isAdmin()" 
+       routerLink="/users" 
+       class="mobile-nav-link"
+       [class.active]="isActiveRoute('/users')">
+      Users
+    </a>
+    <a routerLink="/profile" 
+       class="mobile-nav-link"
+       [class.active]="isActiveRoute('/profile')">
+      Profile
+    </a>
+  </div>
+</nav>

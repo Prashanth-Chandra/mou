@@ -1,0 +1,222 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="card-title">Users Management</h2>
+        <button 
+          *ngIf="isAdmin()" 
+          class="btn btn-primary"
+          (click)="toggleAddForm()">
+          {{ showAddForm ? 'Cancel' : 'Add User' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Add User Form -->
+    <div *ngIf="showAddForm && isAdmin()" class="card" style="margin-bottom: 1rem;">
+      <div class="card-header">
+        <h3 class="card-title">Add New User</h3>
+      </div>
+      <form #userForm="ngForm" (ngSubmit)="addUser()" novalidate>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem;">
+          <div class="form-group">
+            <label for="firstName" class="form-label">First Name:</label>
+            <input 
+              type="text" 
+              id="firstName" 
+              name="firstName"
+              class="form-control"
+              [(ngModel)]="newUser.firstName"
+              #firstName="ngModel"
+              required
+              placeholder="Enter first name">
+            <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+              First name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="form-label">Last Name:</label>
+            <input 
+              type="text" 
+              id="lastName" 
+              name="lastName"
+              class="form-control"
+              [(ngModel)]="newUser.lastName"
+              #lastName="ngModel"
+              required
+              placeholder="Enter last name">
+            <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+              Last name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email:</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              class="form-control"
+              [(ngModel)]="newUser.email"
+              #email="ngModel"
+              required
+              email
+              placeholder="Enter email">
+            <div *ngIf="email.invalid && email.touched" class="alert alert-danger">
+              <div *ngIf="email.errors?.['required']">Email is required</div>
+              <div *ngIf="email.errors?.['email']">Please enter a valid email</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone:</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              class="form-control"
+              [(ngModel)]="newUser.phone"
+              #phone="ngModel"
+              required
+              placeholder="Enter phone number">
+            <div *ngIf="phone.invalid && phone.touched" class="alert alert-danger">
+              Phone number is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dob" class="form-label">Date of Birth:</label>
+            <input 
+              type="date" 
+              id="dob" 
+              name="dob"
+              class="form-control"
+              [(ngModel)]="newUser.dob"
+              #dob="ngModel"
+              required
+              (change)="onDobChange()">
+            <div *ngIf="dob.invalid && dob.touched" class="alert alert-danger">
+              Date of birth is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age" class="form-label">Age:</label>
+            <input 
+              type="number" 
+              id="age" 
+              name="age"
+              class="form-control"
+              [(ngModel)]="newUser.age"
+              readonly
+              placeholder="Auto-calculated">
+          </div>
+
+          <div class="form-group">
+            <label for="gender" class="form-label">Gender:</label>
+            <select 
+              id="gender" 
+              name="gender"
+              class="form-select"
+              [(ngModel)]="newUser.gender"
+              required>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="role" class="form-label">Role:</label>
+            <select 
+              id="role" 
+              name="role"
+              class="form-select"
+              [(ngModel)]="newUser.role"
+              required>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label for="password" class="form-label">Password:</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password"
+              class="form-control"
+              [(ngModel)]="newUser.password"
+              #password="ngModel"
+              required
+              minlength="6"
+              placeholder="Enter password">
+            <div *ngIf="password.invalid && password.touched" class="alert alert-danger">
+              <div *ngIf="password.errors?.['required']">Password is required</div>
+              <div *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 1rem; border-top: 1px solid #eee;">
+          <button 
+            type="submit" 
+            class="btn btn-success"
+            [disabled]="userForm.invalid">
+            Add User
+          </button>
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            style="margin-left: 0.5rem;"
+            (click)="toggleAddForm()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th *ngIf="isAdmin()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{user.firstName}} {{user.lastName}}</td>
+            <td>{{user.age}}</td>
+            <td style="text-transform: capitalize;">{{user.gender}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone}}</td>
+            <td style="text-transform: capitalize;">
+              <span [class]="user.role === 'admin' ? 'badge-admin' : 'badge-user'">
+                {{user.role}}
+              </span>
+            </td>
+            <td *ngIf="isAdmin()">
+              <button 
+                class="btn btn-danger btn-sm"
+                (click)="deleteUser(user.id)"
+                title="Delete User">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div *ngIf="users.length === 0" class="text-center" style="padding: 2rem;">
+        <p>No users found.</p>
+      </div>
+    </div>
+  </div>
+</div>

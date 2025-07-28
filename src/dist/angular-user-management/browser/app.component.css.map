@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.component.css"],
+  "sourcesContent": ["/* App component styles */\r\n\r\n.main-content {\r\n  min-height: 100vh;\r\n  background-color: #f5f5f5;\r\n}\r\n\r\n/* Remove any default margins/padding from router-outlet */\r\nrouter-outlet {\r\n  display: block;\r\n}\r\n"],
+  "mappings": ";AAEA,CAAC;AACC,cAAY;AACZ,oBAAkB;AACpB;AAGA;AACE,WAAS;AACX;",
+  "names": []
+}

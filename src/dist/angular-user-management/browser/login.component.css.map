@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/login/login.component.css"],
+  "sourcesContent": ["/* Login component specific styles */\r\n.demo-credentials {\r\n  margin-top: 2rem;\r\n  padding-top: 1rem;\r\n  border-top: 1px solid #eee;\r\n}\r\n\r\n.demo-credentials p {\r\n  margin: 0.5rem 0;\r\n}\r\n\r\n/* Loading state */\r\nbutton:disabled {\r\n  opacity: 0.6;\r\n  cursor: not-allowed;\r\n}\r\n\r\n/* Form validation styles */\r\n.form-control.ng-invalid.ng-touched {\r\n  border-color: #e74c3c;\r\n}\r\n\r\n.form-control.ng-valid.ng-touched {\r\n  border-color: #27ae60;\r\n}\r\n\r\n.alert {\r\n  font-size: 14px;\r\n  padding: 0.5rem;\r\n  margin-top: 0.5rem;\r\n}\r\n"],
+  "mappings": ";AACA,CAAC;AACC,cAAY;AACZ,eAAa;AACb,cAAY,IAAI,MAAM;AACxB;AAEA,CANC,iBAMiB;AAChB,UAAQ,OAAO;AACjB;AAGA,MAAM;AACJ,WAAS;AACT,UAAQ;AACV;AAGA,CAAC,YAAY,CAAC,UAAU,CAAC;AACvB,gBAAc;AAChB;AAEA,CAJC,YAIY,CAAC,QAAQ,CAJG;AAKvB,gBAAc;AAChB;AAEA,CAAC;AACC,aAAW;AACX,WAAS;AACT,cAAY;AACd;",
+  "names": []
+}
